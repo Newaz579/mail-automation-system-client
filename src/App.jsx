@@ -1,13 +1,22 @@
-import React from 'react';
-import UploadForm from './components/UploadForm';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Header from "./components/Header";
+import Home from "./pages/Home";
+import SendMultipleEmails from "./pages/SendMultipleEmails";
+import "./App.css";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <h1>Mail Automation</h1>
-      <UploadForm />
-    </div>
+    <Router>
+      <div className="App">
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/send-multiple-emails" element={<SendMultipleEmails />} />
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
