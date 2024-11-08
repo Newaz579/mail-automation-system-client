@@ -1,4 +1,4 @@
-import axios from "axios";
+// import axios from "axios";
 
 const API_URL = "http://localhost:5000/api";
 
@@ -25,52 +25,50 @@ export const sendEmail = async (emailData) => {
   }
 };
 
-export const uploadExcelFile = (formData) => {
-  return axios.post(`${API_URL}/upload-excel`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+// export const uploadExcelFile = (formData) => {
+//   return axios.post(`${API_URL}/upload-excel`, formData, {
+//     headers: { "Content-Type": "multipart/form-data" },
+//   });
+// };
+
+export const uploadExcelFile = async (formData) => {
+  try {
+    const response = await fetch(`${API_URL}/upload-excel`, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to upload file");
+    }
+
+    const data = await response.json();
+    return data; 
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    throw error;
+  }
 };
 
-// export const uploadExcelFile = async (formData) => {
-//   try {
-//     const response = await fetch(`${API_URL}/upload-excel`, {
-//       method: "POST",
-//       headers: {
-       
-//       },
-//       body: formData,
-//     });
 
-//     if (!response.ok) {
-//       throw new Error("Failed to upload file");
-//     }
+export const sendMultipleEmails = async (emails) => {
+  try {
+    const response = await fetch(`${API_URL}/send-multiple-emails`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ emails }),
+    });
 
-//     const data = await response.json();
-//     return data;
-//   } catch (error) {
-//     console.error("Error uploading file:", error);
-//     throw error;
-//   }
-// };
+    // if (!response.ok) {
+    //   throw new Error("Failed to send emails");
+    // }
 
-// export const sendMultipleEmails = async (emails) => {
-//   try {
-//     const response = await fetch(`${API_URL}/send-multiple-emails`, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({ emails }),
-//     });
-
-//     if (!response.ok) {
-//       throw new Error("Failed to send emails");
-//     }
-
-//     const data = await response.json();
-//     return data;
-//   } catch (error) {
-//     console.error("Error sending emails:", error);
-//     throw error;
-//   }
-// };
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error sending emails:", error);
+    throw error;
+  }
+};
